@@ -1,0 +1,8 @@
+{% extends 'generic/confirmation_form.html' %}
+{% load form_helpers %}
+
+{% block title %}Удалить {{ device_bay.installed_device }} из {{ device_bay }}?{% endblock %}
+
+{% block message %}
+    <p>Вы уверены что хотите удалить <strong>{{ device_bay.installed_device }}</strong> из <strong>{{ device_bay }}</strong>?</p>
+{% endblock %}

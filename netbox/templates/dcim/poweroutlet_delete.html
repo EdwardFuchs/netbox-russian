@@ -1,0 +1,8 @@
+{% extends 'generic/confirmation_form.html' %}
+{% load form_helpers %}
+
+{% block title %}Удалить розетку {{ poweroutlet }}?{% endblock %}
+
+{% block message %}
+    <p>Вы уверены, что хотите удалить эту розетку из <strong>{{ poweroutlet.device }}</strong>?</p>
+{% endblock %}

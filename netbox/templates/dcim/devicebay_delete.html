@@ -1,0 +1,8 @@
+{% extends 'generic/confirmation_form.html' %}
+{% load form_helpers %}
+
+{% block title %}Удалить отсек устройства {{ devicebay }}?{% endblock %}
+
+{% block message %}
+    <p>Вы уверены, что хотите удалить этот отсек устройства из <strong>{{ devicebay.device }}</strong>?</p>
+{% endblock %}

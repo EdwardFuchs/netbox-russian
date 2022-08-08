@@ -1,0 +1,178 @@
+{% extends 'generic/object.html' %}
+{% load buttons %}
+{% load static %}
+{% load helpers %}
+{% load plugins %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  <li class="breadcrumb-item"><a href="{% url 'dcim:powerfeed_list' %}?site_id={{ object.power_panel.site.pk }}">{{ object.power_panel.site }}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'dcim:powerfeed_list' %}?power_panel_id={{ object.power_panel.pk }}">{{ object.power_panel }}</a></li>
+  {% if object.rack %}
+    <li class="breadcrumb-item"><a href="{% url 'dcim:powerfeed_list' %}?rack_id={{ object.rack.pk }}">{{ object.rack }}</a></li>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                Электропитание
+            </h5>
+            <div class="card-body">
+                <table class="table table-hover attr-table">
+                    <tr>
+                        <th scope="row">Силовая панель</th>
+                        <td>{{ object.power_panel|linkify }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Стойка</th>
+                        <td>{{ object.rack|linkify|placeholder }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Тип</th>
+                        <td>{% badge object.get_type_display bg_color=object.get_type_color %}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Статус</th>
+                        <td>{% badge object.get_status_display bg_color=object.get_status_color %}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Подключенное устройство</th>
+                        <td>
+                            {% if object.connected_endpoint %}
+                                {{ object.connected_endpoint.device|linkify }} ({{ object.connected_endpoint }})
+                            {% else %}
+                                {{ ''|placeholder }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Utilization (Allocated)</th>
+                        {% with utilization=object.connected_endpoint.get_power_draw %}
+                            {% if utilization %}
+                                <td>
+                                    {{ utilization.allocated }}VA / {{ object.available_power }}VA
+                                    {% if object.available_power > 0 %}
+                                        {% utilization_graph utilization.allocated|percentage:object.available_power %}
+                                    {% endif %}
+                                </td>
+                            {% else %}
+                                <td class="text-muted">Не доступно</td>
+                            {% endif %}
+                        {% endwith %}
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <h5 class="card-header">
+                Электрические характеристики
+            </h5>
+            <div class="card-body">
+                <table class="table table-hover attr-table">
+                    <tr>
+                        <th scope="row">Поставка</th>
+                        <td>{{ object.get_supply_display }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Напряжение</th>
+                        <td>{{ object.voltage }}V</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ток</th>
+                        <td>{{ object.amperage }}A</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Фаза</th>
+                        <td>{{ object.get_phase_display }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Максимальное использование</th>
+                        <td>{{ object.max_utilization }}%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        {% include 'inc/panels/custom_fields.html' %}
+        {% include 'inc/panels/tags.html' %}
+        {% plugin_left_page object %}
+    </div>
+    <div class="col col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                Подключение
+            </h5>
+            <div class="card-body">
+            {% if object.mark_connected %}
+                <div class="text-muted">
+                  <span class="text-success"><i class="mdi mdi-check-bold"></i></span> Marked as connected
+                </div>
+            {% elif object.cable %}
+                <table class="table table-hover attr-table">
+                    <tr>
+                        <th scope="row">Кабель</th>
+                        <td>
+                            {{ object.cable|linkify }}
+                            <a href="{% url 'dcim:powerfeed_trace' pk=object.pk %}" class="btn btn-primary btn-sm lh-1" title="Трассировка">
+                                <i class="mdi mdi-transit-connection-variant" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% if object.connected_endpoint %}
+                        <tr>
+                            <th scope="row">Устройство</th>
+                            <td>{{ object.connected_endpoint.device|linkify }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Название</th>
+                            <td>{{ object.connected_endpoint|linkify:"name" }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Тип</th>
+                            <td>{{ object.connected_endpoint.get_type_display|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Описание</th>
+                            <td>{{ object.connected_endpoint.description|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Path Status</th>
+                            <td>
+                                {% if object.path.is_active %}
+                                    <span class="badge bg-success">Reachable</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Not Reachable</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            {% else %}
+                <div class="text-muted">
+                    Not connected
+                </div>
+            {% endif %}
+            </div>
+            {% if not object.mark_connected and not object.cable %}
+            <div class="card-footer">
+            {% if perms.dcim.add_cable %}
+                <a href="{% url 'dcim:powerfeed_connect' termination_a_id=object.pk termination_b_type='power-port' %}?return_url={{ object.get_absolute_url }}"
+                class="btn btn-primary btn-sm float-end">
+                    <i class="mdi mdi-ethernet-cable" aria-hidden="true"></i> Подключить
+                </a>
+                    {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% include 'inc/panels/comments.html' %}
+        {% plugin_right_page object %}
+    </div>
+</div>
+<div class="row">
+    <div class="col col-md-12">
+        {% plugin_full_width_page object %}
+    </div>
+</div>
+{% endblock %}

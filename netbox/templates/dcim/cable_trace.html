@@ -1,0 +1,110 @@
+{% extends 'base/layout.html' %}
+{% load helpers %}
+
+{% block title %}Кабель Trace for {{ object|meta:"verbose_name"|bettertitle }} {{ object }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        {# Кабель trace SVG & options #}
+        <div class="col col-md-5">
+          {% if path %}
+            <div class="text-center my-3">
+                <object data="{{ svg_url }}" class="rack_elevation"></object>
+                <a class="btn btn-outline-primary btn-sm my-3" href="{{ svg_url }}">
+                    <i class="mdi mdi-file-download"></i> Download SVG
+                </a>
+            </div>
+            <div class="trace-end">
+                {% with traced_path=path.origin.trace %}
+                    {% if path.is_split %}
+                        <h3 class="text-danger">Path split!</h3>
+                        <p>Select a node below to continue:</p>
+                        <ul class="text-start">
+                            {% for next_node in path.get_split_nodes %}
+                                {% if next_node.cable %}
+                                    <li>
+                                        <a href="{% url 'dcim:frontport_trace' pk=next_node.pk %}">{{ next_node }}</a>
+                                        (Кабель {{ next_node.cable|linkify }})
+                                    </li>
+                                {% else %}
+                                    <li class="text-muted">{{ next_node }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <h3 class="text-center text-success">Trace Completed</h3>
+                        <table class="table">
+                          <tr>
+                            <th scope="row">Total segments</th>
+                            <td>{{ traced_path|length }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Total length</th>
+                            <td>
+                              {% if total_length %}
+                                {{ total_length|floatformat:"-2" }}{% if not is_definitive %}+{% endif %} Meters /
+                                {{ total_length|meters_to_feet|floatformat:"-2" }} Feet
+                              {% else %}
+                                <span class="text-muted">Не доступно</span>
+                              {% endif %}
+                            </td>
+                          </tr>
+                        </table>
+                    {% endif %}
+                {% endwith %}
+            </div>
+          {% else %}
+            <h3 class="text-center text-muted my-3">
+              No paths found
+            </h3>
+          {% endif %}
+        </div>
+
+        {# Related paths #}
+        <div class="col col-md-7">
+            <div class="card">
+                <h5 class="card-header">
+                  Related Paths
+                </h5>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Origin</th>
+                                <th>Destination</th>
+                                <th>Segments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cablepath in related_paths %}
+                                <tr{% if cablepath.pk == path.pk %} class="info"{% endif %}>
+                                    <td>
+                                        <a href="?cablepath_id={{ cablepath.pk }}">
+                                            {{ cablepath.origin.parent_object }} / {{ cablepath.origin }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if cablepath.destination %}
+                                            {{ cablepath.destination }} ({{ cablepath.destination.parent_object }})
+                                        {% else %}
+                                            <span class="text-muted">Incomplete</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        {{ cablepath.segment_count }}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <td colspan="3" class="text-muted">
+                                    Не найдено
+                                </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs px-3">
+    <li class="nav-item" role="presentation">
+        <a class ="nav-link{% if not active_tab %} активный{% endif %}" href="{% url 'dcim:device_import' %}">Стеллажные устройства</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link{% if active_tab == 'child_import' %} активный{% endif %}" href="{% url 'dcim:device_import_child' %}">Дочерние устройства</a>
+    </li>
+</ul>

@@ -1,0 +1,13 @@
+{% if result.status == 'failed' %}
+    <span class="badge bg-danger">Неудачный</span>
+{% elif result.status == 'errored' %}
+    <span class="badge bg-danger">Ошибочный</span>
+{% elif result.status == 'pending' %}
+    <span class="badge bg-info">В ожидании</span>
+{% elif result.status == 'running' %}
+    <span class="badge bg-warning">Запущенный</span>
+{% elif result.status == 'completed' %}
+    <span class="badge bg-success">Завершенный</span>
+{% else %}
+    <span class="badge bg-secondary">Не доступно</span>
+{% endif %}

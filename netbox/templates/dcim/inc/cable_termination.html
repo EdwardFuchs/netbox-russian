@@ -1,0 +1,42 @@
+{% load helpers %}
+<table class="table table-hover panel-body attr-table">
+    {% if termination.device %}
+        {# Device component #}
+        <tr>
+            <td>Устройство</td>
+            <td>{{ termination.device|linkify }}</td>
+        </tr>
+        <tr>
+            <td>Адрес</td>
+            <td>{{ termination.device.site|linkify }}</td>
+        </tr>
+        {% if termination.device.rack %}
+            <tr>
+                <td>Стойка</td>
+                <td>{{ termination.device.rack|linkify }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td>Тип</td>
+            <td>{{ termination|meta:"verbose_name"|capfirst }}</td>
+        </tr>
+        <tr>
+            <td>Компонент</td>
+            <td>{{ termination|linkify }}</td>
+        </tr>
+    {% else %}
+        {# Circuit termination #}
+        <tr>
+            <td>Поставщик услуг</td>
+            <td>{{ termination.circuit.provider|linkify }}</td>
+        </tr>
+        <tr>
+            <td>Внешнее подключение</td>
+            <td>{{ termination.circuit|linkify }}</td>
+        </tr>
+        <tr>
+            <td>подключения</td>
+            <td>{{ termination }}</td>
+        </tr>
+    {% endif %}
+</table>

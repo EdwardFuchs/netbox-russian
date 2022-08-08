@@ -1,0 +1,25 @@
+{% extends 'generic/confirmation_form.html' %}
+
+{% block title %}Swap Circuit Terminations{% endblock %}
+
+{% block message %}
+    <p>Замените эти подключения для внешнего канала {{ circuit }}?</p>
+    <ul>
+        <li>
+            <strong>Точка клиента: </strong>
+            {% if termination_a %}
+                {{ termination_a.site }} {% if termination_a.interface %}- {{ termination_a.interface.device }} {{ termination_a.interface }}{% endif %}
+            {% else %}
+                {{ ''|placeholder }}
+            {% endif %}
+        </li>
+        <li>
+            <strong>Точка поставщика: </strong>
+            {% if termination_z %}
+                {{ termination_z.site }} {% if termination_z.interface %}- {{ termination_z.interface.device }} {{ termination_z.interface }}{% endif %}
+            {% else %}
+                {{ ''|placeholder }}
+            {% endif %}
+        </li>
+    </ul>
+{% endblock %}

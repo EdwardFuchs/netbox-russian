@@ -1,0 +1,73 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+{% load form_helpers %}
+{% load log_levels %}
+
+{% block title %}{{ script }}{% endblock %}
+
+{% block object_identifier %}
+  {{ script.full_name }}
+{% endblock object_identifier %}
+
+{% block breadcrumbs %}
+  <li class="breadcrumb-item"><a href="{% url 'extras:script_list' %}">Скрипты</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'extras:script_list' %}#module.{{ module }}">{{ module|bettertitle }}</a></li>
+{% endblock breadcrumbs %}
+
+{% block subtitle %}
+  <div class="object-subtitle">
+    <div class="text-muted">{{ script.Meta.description|markdown }}</div>
+  </div>
+{% endblock subtitle %}
+
+{% block controls %}{% endblock %}
+
+{% block tabs %}
+  <ul class="nav nav-tabs px-3">
+    <li class="nav-item" role="presentation">
+      <a href="#run" role="tab" data-bs-toggle="tab" class="nav-link active">Запустить</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a href="#source" role="tab" data-bs-toggle="tab" class="nav-link">Источник</a>
+    </li>
+  </ul>
+{% endblock tabs %}
+
+{% block content %}
+  <div role="tabpanel" class="tab-pane active" id="run">
+    <div class="row">
+      <div class="col">
+        {% if not perms.extras.run_script %}
+          <div class="alert alert-warning">
+            <i class="mdi mdi-alert"></i>
+            Вы не имеете разрешения для запуска скрипта.
+          </div>
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data" class="form form-horizontal">
+          {% csrf_token %}
+          <div class="field-group my-4">
+            {% if form.requires_input %}
+              <div class="row mb-2">
+                <h5 class="offset-sm-3">Данные скрипта</h5>
+              </div>
+            {% else %}
+              <div class="alert alert-info">
+                <i class="mdi mdi-information"></i>
+                Этот сценарий не требует каких-либо входных данных для запуска.
+              </div>
+            {% endif %}
+            {% render_form form %}
+          </div>
+          <div class="float-end">
+            <a href="{% url 'extras:script_list' %}" class="btn btn-outline-danger">Отмена</a>
+            <button type="submit" name="_run" class="btn btn-primary"{% if not perms.extras.run_script %} disabled="disabled"{% endif %}><i class="mdi mdi-play"></i> Run Скрипт</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="source">
+    <code class="h6 my-3 d-block">{{ script.filename }}</code>
+    <pre class="block">{{ script.source }}</pre>
+  </div>
+{% endblock content %}

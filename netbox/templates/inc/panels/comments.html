@@ -1,0 +1,14 @@
+{% load helpers %}
+
+<div class="card">
+  <h5 class="card-header">
+    Комментарии
+  </h5>
+  <div class="card-body">
+    {% if object.comments %}
+      {{ object.comments|markdown }}
+    {% else %}
+      <span class="text-muted">Нет</span>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,13 @@
+{% extends 'generic/confirmation_form.html' %}
+{% load helpers %}
+
+{% block title %}Отключить {{ obj_type_plural|bettertitle }}{% endblock %}
+
+{% block message %}
+    <p>Вы уверены, что хотите отключить эти {{ selected_objects|length }} {{ obj_type_plural }}?</p>
+    <ul>
+        {% for obj in selected_objects %}
+            <li>{{ obj }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

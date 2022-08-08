@@ -1,0 +1,155 @@
+{% extends 'generic/object.html' %}
+{% load helpers %}
+{% load plugins %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  <li class="breadcrumb-item">
+    <a href="{% url 'dcim:device_consoleserverports' pk=object.device.pk %}">{{ object.device }}</a>
+  </li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">
+                    Консольный серверный порт
+                </h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <th scope="row">Устройство</th>
+                            <td>{{ object.device|linkify }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Module</th>
+                            <td>{{ object.module|linkify|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Название</th>
+                            <td>{{ object.name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Маркировка</th>
+                            <td>{{ object.label|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Тип</th>
+                            <td>{{ object.get_type_display|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Скорость</th>
+                            <td>{{ object.get_speed_display|placeholder }}</td>
+                    </tr>
+                        <tr>
+                            <th scope="row">Описание</th>
+                            <td>{{ object.description|placeholder }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            {% include 'inc/panels/custom_fields.html' %}
+            {% include 'inc/panels/tags.html' %}
+            {% plugin_left_page object %}
+        </div>
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">
+                    Подключение
+                </h5>
+                <div class="card-body">
+                    {% if object.mark_connected %}
+                    <span class="text-success"><i class="mdi mdi-check-bold"></i></span> Marked as connected
+                    {% elif object.cable %}
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <th scope="row">Кабель</th>
+                            <td>
+                                {{ object.cable|linkify }}
+                                <a href="{% url 'dcim:consoleserverport_trace' pk=object.pk %}" class="btn btn-primary btn-sm lh-1" title="Трассировка">
+                                    <i class="mdi mdi-transit-connection-variant" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% if object.connected_endpoint %}
+                            <tr>
+                                <th scope="row">Устройство</th>
+                                <td>
+                                    {{ object.connected_endpoint.device|linkify }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Название</th>
+                                <td>{{ object.connected_endpoint|linkify:"name" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Тип</th>
+                                <td>{{ object.connected_endpoint.get_type_display|placeholder }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Описание</th>
+                                <td>{{ object.connected_endpoint.description|placeholder }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Path Status</th>
+                                <td>
+                                    {% if object.path.is_active %}
+                                        <span class="badge bg-success">Reachable</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Not Reachable</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                {% else %}
+                    <div class="text-muted">
+                        Not Connected
+                        {% if perms.dcim.add_cable %}
+                            <div class="dropdown float-end">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="mdi mdi-ethernet-cable" aria-hidden="true"></span> Подключить
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a
+                                            class="dropdown-item"
+                                            href="{% url 'dcim:consoleserverport_connect' termination_a_id=object.pk termination_b_type='console-port' %}?return_url={{ object.get_absolute_url }}"
+                                        >
+                                            Консольный порт
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            class="dropdown-item"
+                                            href="{% url 'dcim:consoleserverport_connect' termination_a_id=object.pk termination_b_type='front-port' %}?return_url={{ object.get_absolute_url }}"
+                                        >
+                                            Передний порт
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            class="dropdown-item"
+                                            href="{% url 'dcim:consoleserverport_connect' termination_a_id=object.pk termination_b_type='rear-port' %}?return_url={{ object.get_absolute_url }}"
+                                        >
+                                            Задний порт
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            {% include 'dcim/inc/panels/inventory_items.html' %}
+            {% plugin_right_page object %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+            {% plugin_full_width_page object %}
+        </div>
+    </div>
+{% endblock %}

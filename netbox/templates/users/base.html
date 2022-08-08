@@ -1,0 +1,26 @@
+{% extends 'base/layout.html' %}
+
+{% block tabs %}
+  <ul class="nav nav-tabs px-3">
+    <li role="presentation" class="nav-item">
+      <a class="nav-link{% if active_tab == 'profile' %} активный{% endif %}" href="{% url 'user:profile' %}">Профиль</a>
+    </li>
+    <li role="presentation" class="nav-item">
+      <a class="nav-link{% if active_tab == 'preferences' %} активный{% endif %}" href="{% url 'user:preferences' %}">Настройки</a>
+    </li>
+    {% if not request.user.ldap_username %}
+      <li role="presentation" class="nav-item">
+        <a class="nav-link{% if active_tab == 'password' %} активный{% endif %}" href="{% url 'user:change_password' %}">Пароль</a>
+      </li>
+    {% endif %}
+    <li role="presentation" class="nav-item">
+      <a class="nav-link{% if active_tab == 'api-tokens' %} активный{% endif %}" href="{% url 'user:token_list' %}">API токены</a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content-wrapper %}
+  <div class="tab-content">
+    {% block content %}{% endblock %}
+  </div>
+{% endblock %}

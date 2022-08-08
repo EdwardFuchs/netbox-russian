@@ -1,0 +1,22 @@
+{% extends 'base/layout.html' %}
+{% load form_helpers %}
+
+{% block title %}Add New Member to Virtual Шасси {{ virtual_chassis }}{% endblock %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data" class="form-object-edit">
+        {% csrf_token %}
+        <div class="card">
+            <h5 class="card-header">Добавить новый</h5>
+            <div class="card-body">
+                {% render_form member_select_form %}
+                {% render_form membership_form %}
+            </div>
+        </div>
+        <div class="text-end my-3">
+            <a href="{{ return_url }}" class="btn btn-outline-danger">Отмена</a>
+            <button type="submit" name="_addanother" class="btn btn-outline-primary">Добавить еще</button>
+            <button type="submit" name="_save" class="btn btn-primary">Сохранить</button>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'generic/confirmation_form.html' %}
+{% load form_helpers %}
+
+{% block title %}Удалить интерфейс {{ interface }}?{% endblock %}
+
+{% block message %}
+    <p>Вы уверены, что хотите удалить этот интерфейс из <strong>{{ interface.device }}</strong>?</p>
+{% endblock %}
