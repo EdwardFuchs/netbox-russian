@@ -81,7 +81,7 @@
         </div>
       </div>
       <div class="card">
-        <h5 class="card-header">Related Interfaces</h5>
+        <h5 class="card-header">Связанные интерфейсы</h5>
         <div class="card-body">
           <table class="table table-hover">
             <tr>
@@ -89,7 +89,7 @@
               <td>{{ object.parent|linkify|placeholder }}</td>
             </tr>
             <tr>
-              <th scope="row">Bridge</th>
+              <th scope="row">Мост</th>
               <td>{{ object.bridge|linkify|placeholder }}</td>
             </tr>
             <tr>
@@ -307,7 +307,7 @@
                   {% endif %}
                 </tr>
                 <tr>
-                  <th scope="row">Channel</th>
+                  <th scope="row">Канал</th>
                   <td>{{ object.get_rf_channel_display|placeholder }}</td>
                   {% if peer %}
                     <td{% if peer.rf_channel != object.rf_channel %} class="text-danger"{% endif %}>
@@ -316,10 +316,10 @@
                   {% endif %}
                 </tr>
                 <tr>
-                  <th scope="row">Channel Frequency</th>
+                  <th scope="row">Частота канала</th>
                   <td>
                     {% if object.rf_channel_frequency %}
-                      {{ object.rf_channel_frequency|simplify_decimal }} MHz
+                      {{ object.rf_channel_frequency|simplify_decimal }} МГц
                     {% else %}
                       {{ ''|placeholder }}
                     {% endif %}
@@ -327,7 +327,7 @@
                   {% if peer %}
                     <td{% if peer.rf_channel_frequency != object.rf_channel_frequency %} class="text-danger"{% endif %}>
                       {% if peer.rf_channel_frequency %}
-                        {{ peer.rf_channel_frequency|simplify_decimal }} MHz
+                        {{ peer.rf_channel_frequency|simplify_decimal }} МГц
                       {% else %}
                         {{ ''|placeholder }}
                       {% endif %}
@@ -335,10 +335,10 @@
                   {% endif %}
                 </tr>
                 <tr>
-                  <th scope="row">Channel Width</th>
+                  <th scope="row">Ширина канала</th>
                   <td>
                     {% if object.rf_channel_width %}
-                      {{ object.rf_channel_width|simplify_decimal }} MHz
+                      {{ object.rf_channel_width|simplify_decimal }} МГц
                     {% else %}
                       {{ ''|placeholder }}
                     {% endif %}
@@ -346,7 +346,7 @@
                   {% if peer %}
                     <td{% if peer.rf_channel_width != object.rf_channel_width %} class="text-danger"{% endif %}>
                       {% if peer.rf_channel_width %}
-                        {{ peer.rf_channel_width|simplify_decimal }} MHz
+                        {{ peer.rf_channel_width|simplify_decimal }} МГц
                       {% else %}
                         {{ ''|placeholder }}
                       {% endif %}
@@ -358,7 +358,7 @@
           </div>
         </div>
         <div class="card">
-          <h5 class="card-header">Wireless LANs</h5>
+          <h5 class="card-header">Беспроводные локальные сети</h5>
           <div class="card-body">
             <table class="table table-hover table-headings">
               <thead>

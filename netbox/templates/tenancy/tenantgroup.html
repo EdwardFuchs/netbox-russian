@@ -13,7 +13,7 @@
 {% block extra_controls %}
   {% if perms.tenancy.add_tenant %}
     <a href="{% url 'tenancy:tenant_add' %}?group={{ object.pk }}" class="btn btn-sm btn-primary">
-      <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Add Tenant
+      <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Добавить Учреждение
     </a>
   {% endif %}
 {% endblock extra_controls %}

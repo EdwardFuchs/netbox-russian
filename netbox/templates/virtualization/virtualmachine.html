@@ -106,7 +106,7 @@
             <div class="card-body">
                 <table class="table table-hover attr-table">
                     <tr>
-                        <th scope="row"><i class="mdi mdi-gauge"></i> Virtual CPUs</th>
+                        <th scope="row"><i class="mdi mdi-gauge"></i> Виртуальные процессоры</th>
                         <td>{{ object.vcpus|placeholder }}</td>
                     </tr>
                     <tr>
@@ -120,10 +120,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><i class="mdi mdi-harddisk"></i> Disk Space</th>
+                        <th scope="row"><i class="mdi mdi-harddisk"></i> Дисковое пространство</th>
                         <td>
                             {% if object.disk %}
-                                {{ object.disk }} GB
+                                {{ object.disk }} ГБ
                             {% else %}
                                 {{ ''|placeholder }}
                             {% endif %}
@@ -150,7 +150,7 @@
             {% if perms.ipam.add_service %}
                 <div class="card-footer text-end noprint">
                     <a href="{% url 'ipam:service_add' %}?virtual_machine={{ object.pk }}" class="btn btn-sm btn-primary">
-                        <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Assign Service
+                        <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Назначить службу
                     </a>
                 </div>
             {% endif %}

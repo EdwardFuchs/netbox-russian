@@ -24,14 +24,14 @@
                       <td>
                         {% if object.asn %}
                           <div class="float-end text-warning">
-                            <i class="mdi mdi-alert" title="This field will be removed in a future release. Please migrate this data to ASN objects."></i>
+                            <i class="mdi mdi-alert" title="Это поле будет удалено в будущем выпуске. Перенесите эти данные в объекты ASN."></i>
                           </div>
                         {% endif %}
                         {{ object.asn|placeholder }}
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">ASNs</th>
+                      <th scope="row">ASNы</th>
                       <td>
                         {% for asn in object.asns.all %}
                           {{ asn|linkify }}{% if not forloop.last %}, {% endif %}

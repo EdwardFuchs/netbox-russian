@@ -6,9 +6,9 @@
 
 {% comment %}
 Blocks:
-  header: Page header
-  tabs: Horizontal navigation tabs
-  content: Page content
+  header: Заголовок страницы
+  tabs: Вкладки горизонтальной навигации
+  content: Содержание страницы
   modals: Bootstrap 5 modal components
 {% endcomment %}
 
@@ -73,7 +73,7 @@ Blocks:
 
         {% if config.MAINTENANCE_MODE %}
           <div class="alert alert-warning text-center mx-3" role="alert">
-            <h4><i class="mdi mdi-alert"></i> Maintenance Mode</h4>
+            <h4><i class="mdi mdi-alert"></i> Режим технического обслуживания</h4>
             <span>В настоящее время модуль находится в режиме технического обслуживания. Функциональность может быть ограничена.</span>
           </div>
         {% endif %}
@@ -134,7 +134,7 @@ Blocks:
 
                     {# API docs #}
                     <a type="button" class="nav-link" href="{% url 'api_docs' %}" target="_blank">
-                      <i title="REST API documentation" class="mdi mdi-book text-primary" data-bs-placement="top" data-bs-toggle="tooltip"></i>
+                      <i title="Документация по REST API" class="mdi mdi-book text-primary" data-bs-placement="top" data-bs-toggle="tooltip"></i>
                     </a>
 
                     {# GraphQL API #}
@@ -146,12 +146,12 @@ Blocks:
 
                     {# GitHub #}
                     <a type="button" class="nav-link" href="https://github.com/netbox-community/netbox" target="_blank">
-                      <i title="Source Code" class="mdi mdi-github text-primary" data-bs-placement="top" data-bs-toggle="tooltip"></i>
+                      <i title="Исходный код" class="mdi mdi-github text-primary" data-bs-placement="top" data-bs-toggle="tooltip"></i>
                     </a>
 
                     {# NetDev Slack #}
                     <a type="button" class="nav-link" href="https://netdev.chat/" target="_blank">
-                      <i title="Community" class="mdi mdi-slack text-primary" data-bs-placement="top" data-bs-toggle="tooltip"></i>
+                      <i title="Сообщество" class="mdi mdi-slack text-primary" data-bs-placement="top" data-bs-toggle="tooltip"></i>
                     </a>
                   {% endblock footer_links %}
                 </nav>

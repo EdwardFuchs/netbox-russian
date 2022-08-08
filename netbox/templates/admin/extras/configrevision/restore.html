@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block content %}
-  <p>Restore configuration #{{ object.pk }} from <strong>{{ object.created }}</strong>?</p>
+  <p>Восстановить конфигурацию #{{ object.pk }} из<strong>{{ object.created }}</strong>?</p>
 
   <table>
     <thead>
       <tr>
-        <th>Parameter</th>
-        <th>Current Value</th>
-        <th>New Value</th>
+        <th>Параметр</th>
+        <th>Текущая значение</th>
+        <th>Новое значение</th>
         <th></th>
       </tr>
     </thead>
@@ -19,7 +19,7 @@
           <td>{{ param }}</td>
           <td>{{ current }}</td>
           <td>{{ new }}</td>
-          <td>{% if current != new %}<img src="{% static 'admin/img/icon-changelink.svg' %}" alt="*" title="Changed">{% endif %}</td>
+          <td>{% if current != new %}<img src="{% static 'admin/img/icon-changelink.svg' %}" alt="*" title="Изменен">{% endif %}</td>
         </tr>
       {% endfor %}
     </tbody>

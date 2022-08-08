@@ -34,3 +34,4 @@ html_results.csv
 test.py
 translate.py
 /nbt_data/
+/netbox/netbox/configuration.py

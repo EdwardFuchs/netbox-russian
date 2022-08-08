@@ -15,7 +15,7 @@
     <div class="col col-md-6">
       <div class="card">
         <h5 class="card-header">
-          Contact Group
+          Контактная группа
         </h5>
         <div class="card-body">
           <table class="table table-hover attr-table">
@@ -55,7 +55,7 @@
         {% if perms.tenancy.add_contactgroup %}
           <div class="card-footer text-end noprint">
             <a href="{% url 'tenancy:contactgroup_add' %}?parent={{ object.pk }}" class="btn btn-sm btn-primary">
-              <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Add Contact Group
+              <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Добавить контактную группу
             </a>
           </div>
         {% endif %}

@@ -22,26 +22,26 @@
     </td>
   </tr>
   <tr>
-    <td>Channel</td>
+    <td>Канал</td>
     <td>
       {{ interface.get_rf_channel_display|placeholder }}
     </td>
   </tr>
   <tr>
-      <th scope="row">Channel Frequency</th>
+      <th scope="row">Частота канала</th>
       <td>
         {% if interface.rf_channel_frequency %}
-          {{ interface.rf_channel_frequency|simplify_decimal }} MHz
+          {{ interface.rf_channel_frequency|simplify_decimal }} МГц
         {% else %}
           {{ ''|placeholder }}
         {% endif %}
       </td>
   </tr>
   <tr>
-      <th scope="row">Channel Width</th>
+      <th scope="row">Ширина канала</th>
       <td>
         {% if interface.rf_channel_width %}
-          {{ interface.rf_channel_width|simplify_decimal }} MHz
+          {{ interface.rf_channel_width|simplify_decimal }} МГц
         {% else %}
           {{ ''|placeholder }}
         {% endif %}
